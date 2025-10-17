@@ -35,7 +35,7 @@ ColumnLayout {
     Keys.onTabPressed: focusOnNextField()
 
     function focusOnPreviousField() {
-        if (wizardCreateWallet2.state == "verify") {
+        if (wizardCreateWallet4.state == "verify") {
             if (wordNumber < 5) {
                 if (recoveryPhraseLabel.visible) {
                     return recoveryPhraseLabel.forceActiveFocus();
@@ -43,7 +43,7 @@ ColumnLayout {
                     return header.forceActiveFocus();
                 }
             } else if (wordNumber >= 5 && wordNumber < 25) {
-                return parent.children[wizardCreateWallet2.hiddenWords[parseInt(wordNumber / 5) - 1]].lineEdit.forceActiveFocus()
+                return parent.children[wizardCreateWallet4.hiddenWords[parseInt(wordNumber / 5) - 1]].lineEdit.forceActiveFocus()
             }
         } else {
             if (wordNumber == 0) {
@@ -59,9 +59,9 @@ ColumnLayout {
     }
 
     function focusOnNextField() {
-        if (wizardCreateWallet2.state == "verify") {
+        if (wizardCreateWallet4.state == "verify") {
             if (wordNumber < 20) {
-                return parent.children[wizardCreateWallet2.hiddenWords[parseInt(wordNumber / 5) + 1]].lineEdit.forceActiveFocus()
+                return parent.children[wizardCreateWallet4.hiddenWords[parseInt(wordNumber / 5) + 1]].lineEdit.forceActiveFocus()
             } else {
                 return navigation.btnPrev.forceActiveFocus()
             }
@@ -134,7 +134,7 @@ ColumnLayout {
             color: wordsMatch ? (MoneroComponents.Style.blackTheme ? "#00FF00" : "#008000") : "#FF0000"
             themeTransition: false
             onTextChanged: {
-                if (wizardCreateWallet2.seedListGrid && wordsMatch) {
+                if (wizardCreateWallet4.seedListGrid && wordsMatch) {
                     if (wordNumber < 20) {
                         focusOnNextField();
                     }

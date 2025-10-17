@@ -366,12 +366,12 @@ Rectangle {
             if (!success) {
                 appWindow.showStatusMessage(qsTr("Failed to store the wallet"), 3);
                 wizardStateView.wizardRestoreWallet4View.wizardNav.btnNext.enabled = true;
-                wizardStateView.wizardCreateWallet4View.wizardNav.btnNext.enabled = true;
+                wizardStateView.wizardCreateWallet2View.wizardNav.btnNext.enabled = true;
                 return;
             }
 
-            if (wizardStateView.wizardCreateWallet2View.seedListGrid) {
-                wizardStateView.wizardCreateWallet2View.seedListGrid.destroy();
+            if (wizardStateView.wizardCreateWallet4View.seedListGrid) {
+                wizardStateView.wizardCreateWallet4View.seedListGrid.destroy();
             }
 
             // make sure temporary wallet files are deleted

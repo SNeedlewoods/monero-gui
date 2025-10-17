@@ -70,7 +70,6 @@ Rectangle {
                         wizardStateView.state = "wizardCreateDevice1";
                     } else {
                         wizardStateView.state = "wizardCreateWallet2";
-                        wizardStateView.wizardCreateWallet2View.pageRoot.forceActiveFocus();
                     }
                 }
                 onNextClicked: {
@@ -80,6 +79,7 @@ Rectangle {
                         wizardStateView.state = "wizardCreateWallet5";
                     } else {
                         wizardStateView.state = "wizardCreateWallet4";
+                        wizardStateView.wizardCreateWallet4View.pageRoot.forceActiveFocus();
                     }
                 }
             }

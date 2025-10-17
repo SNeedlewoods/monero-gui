@@ -69,6 +69,7 @@ ApplicationWindow {
     property alias persistentSettings : persistentSettings
     property string accountsDir: !persistentSettings.portable ? moneroAccountsDir : persistentSettings.portableFolderName + "/wallets"
     property var currentWallet;
+    property var tmpWallet;
     property bool disconnected: currentWallet ? currentWallet.disconnected : false
     property var transaction;
     property var walletPassword
@@ -400,6 +401,36 @@ ApplicationWindow {
 
         // save wallet keys in case wallet settings have been changed in the init
         currentWallet.setPassword(walletPassword);
+    }
+
+    // tmpWallet is used for making a daemon connection on wallet creation
+    // so we can request the actual block height instead of relying on an estimate
+    function connectTmpWallet() {
+        if (tmpWallet)
+        {
+            // close already existing tmp wallet and create a new one
+            wizard.createWallet();
+        }
+        tmpWallet = wizard.m_wallet;
+
+        if (persistentSettings.useRemoteNode) {
+            const remoteNode = remoteNodesModel.currentRemoteNode();
+            currentDaemonAddress = remoteNode.address;
+            tmpWallet.setDaemonLogin(remoteNode.username, remoteNode.password);
+        } else {
+            currentDaemonAddress = localDaemonAddress;
+        }
+
+        tmpWallet.initAsync(
+            currentDaemonAddress,
+            isTrustedDaemon(),
+            /* upperTransactionLimit */ 0,
+            /* isRecovering */ false,
+            /* isRecoveringFromDevice */ false,
+            /* restoreHeight */ 0,
+            persistentSettings.getWalletProxyAddress());
+        walletManager.setDaemonAddressAsync(currentDaemonAddress);
+        tmpWallet.pauseRefresh();
     }
 
     function isTrustedDaemon() {
@@ -783,7 +814,8 @@ ApplicationWindow {
         daemonStartStopInProgress = 1;
 
         // Pause refresh while starting daemon
-        currentWallet.pauseRefresh();
+        if (currentWallet)
+            currentWallet.pauseRefresh();
 
         const noSync = appWindow.walletMode === 0;
         const bootstrapNodeAddress = persistentSettings.walletMode < 2 ? "auto" : persistentSettings.bootstrapNodeAddress
@@ -2144,7 +2176,7 @@ ApplicationWindow {
         // Simple mode connection check timer
         id: simpleModeConnectionTimer
         interval: 2000
-        running: appWindow.walletMode < 2 && currentWallet != undefined && daemonStartStopInProgress == 0
+        running: appWindow.walletMode < 2 && daemonStartStopInProgress == 0
         repeat: true
         onTriggered: appWindow.checkSimpleModeConnection()
     }

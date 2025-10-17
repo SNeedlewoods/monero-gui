@@ -92,8 +92,8 @@ Rectangle {
                 btnNext.enabled: walletInput.verify();
                 btnPrev.text: appWindow.width <= 506 ? "<" : qsTr("Back to menu") + translationManager.emptyString
                 onPrevClicked: {
-                    if (wizardStateView.wizardCreateWallet2View.seedListGrid) {
-                        wizardStateView.wizardCreateWallet2View.seedListGrid.destroy();
+                    if (wizardStateView.wizardCreateWallet4View.seedListGrid) {
+                        wizardStateView.wizardCreateWallet4View.seedListGrid.destroy();
                     }
                     wizardController.wizardStateView.wizardCreateWallet3View.pwField = "";
                     wizardController.wizardStateView.wizardCreateWallet3View.pwConfirmField = "";
@@ -105,7 +105,6 @@ Rectangle {
                     wizardController.walletOptionsName = walletInput.walletName.text;
                     wizardController.walletOptionsLocation = appWindow.walletMode >= 2 ? walletInput.walletLocation.text : appWindow.accountsDir;
                     wizardStateView.state = "wizardCreateWallet2";
-                    wizardStateView.wizardCreateWallet2View.pageRoot.forceActiveFocus();
                 }
             }
         }
